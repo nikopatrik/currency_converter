@@ -24,3 +24,36 @@ CLI depends on Redis which is running in docker container. For application to be
 ```bash
 $ docker-compose up
 ```
+### Running without docker 
+*(Not recommended)* To use application without docker you have to create virtual enviroment and install requirements.
+To do so, type in console in root directory of this project following commands:
+```bash
+$ python3 -m venv venv
+$ . venv/bin/activate
+$ pip install -r requirements.txt
+```
+Now, when we have everything installed to run our application, we can then run app by calling CLI:
+```bash
+./currency_converter.py --amount 100.0 --input_currency EUR --output_currency CZK
+{   
+    "input": {
+        "amount": 100.0,
+        "currency": "EUR"
+    },
+    "output": {
+        "CZK": 2707.36, 
+    }
+}
+```
+To run Flask application: 
+```bash
+$ export FLASK_APP=app.py
+$ export FLASK_RUN_HOST=0.0.0.0
+$ flask run
+```
+## Parameters
+- `amount` - amount which we want to convert - float
+- `input_currency` - input currency - 3 letters name or currency symbol
+- `output_currency` - requested/output currency - 3 letters name or currency symbol
+
+
