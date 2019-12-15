@@ -8,6 +8,8 @@ services:
       - .:/application
     environment:
       FLASK_ENV: development
+    depends_on:
+      - redis
   redis:
     image: "redis:alpine"
     ports:
