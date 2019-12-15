@@ -24,8 +24,8 @@ CLI depends on Redis which is running in docker container. For application to be
 ```bash
 $ docker-compose up
 ```
-### Running without docker 
-*(Not recommended)* To use application without docker you have to create virtual enviroment and install requirements.
+### Running CLI 
+To use CLI application outside docker you have to create virtual enviroment and install requirements.
 To do so, type in console in root directory of this project following commands:
 ```bash
 $ python3 -m venv venv
@@ -45,7 +45,9 @@ Now, when we have everything installed to run our application, we can then run a
     }
 }
 ```
-To run Flask application: 
+> Mind that without redis application might not be fully functional.
+### Running without docker 
+*(Not recommended)* To run Flask application without docker, type: 
 ```bash
 $ export FLASK_APP=app.py
 $ export FLASK_RUN_HOST=0.0.0.0
