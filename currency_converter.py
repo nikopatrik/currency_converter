@@ -114,16 +114,19 @@ class CurrencyConverterAbstract(ABC):
 # Class for downloading data from fixer.io api service
 class FixerIOCurrencyConverter(CurrencyConverterAbstract):
     def download_data(self):
-        if self.cache.get('timestamp') is not None:
-            # We check whether data is older than 1 hour because update on this API is set for 1 hour
-            # If so, download data from fixerio server.
-            # If not, take the cached data from redis.
-            if time.time() - float(self.cache.get('timestamp')) > 3600:
+        try:
+            if self.cache.get('timestamp') is not None:
+                # We check whether data is older than 1 hour because update on this API is set for 1 hour
+                # If so, download data from fixerio server.
+                # If not, take the cached data from redis.
+                if time.time() - float(self.cache.get('timestamp')) > 3600:
+                    self.__download_data_from_server()
+                else:
+                    self.__download_data_from_redis()
+            else: # This is the first time downloading.
                 self.__download_data_from_server()
-            else:
-                self.__download_data_from_redis()
-        else: # This is the first time downloading.
-            self.__download_data_from_server()
+        except redis.exceptions.RedisError:
+            raise CurrencyConverterConnectionError
 
     def __download_data_from_redis(self):
         self.base = self.cache.get('base')
