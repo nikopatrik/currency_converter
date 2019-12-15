@@ -117,8 +117,8 @@ class FixerIOCurrencyConverter(CurrencyConverterAbstract):
         try:
             if self.cache.get('timestamp') is not None:
                 # We check whether data is older than 1 hour because update on this API is set for 1 hour
-                # If so, download data from fixerio server.
-                # If not, take the cached data from redis.
+                # If so, download data from fixer.io server.
+                # If not, take cached data from redis.
                 if time.time() - float(self.cache.get('timestamp')) > 3600:
                     self.__download_data_from_server()
                 else:
@@ -161,8 +161,9 @@ class EuropeanBankCurrencyConverter(CurrencyConverterAbstract):
             r = requests.get(url)
         except requests.exceptions.RequestException:
             raise  CurrencyConverterConnectionError
-        tree = ET.fromstring(r.text)
-        for item in tree.findall('./{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube/{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube/'):
+        root = ET.fromstring(r.text)
+        # using XPath to get cube element with the right attribs
+        for item in root.findall('./{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube/{http://www.ecb.int/vocabulary/2002-08-01/eurofxref}Cube/'):
             self.rates[item.attrib['currency']] = float(item.attrib['rate'])
 
 
