@@ -152,6 +152,7 @@ class FixerIOCurrencyConverter(CurrencyConverterAbstract):
 # This class download data from EuropeanBank xml endpoint
 class EuropeanBankCurrencyConverter(CurrencyConverterAbstract):
     def download_data(self):
+        self.base = 'EUR'
         url = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml'
         try:
             r = requests.get(url)
